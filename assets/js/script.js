@@ -63,4 +63,5 @@ $(document).ready(function () {
   // make lanes droppable
 
   // make due date field a date picker
+  $("#task-due-date").datepicker();
 });
