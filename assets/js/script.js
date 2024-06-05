@@ -1,7 +1,7 @@
 // Retrieve nextId from localStorage
 let nextId = JSON.parse(localStorage.getItem("nextId")) ?? 0;
 
-// TODO: create a function to generate a unique task id
+//create a function to generate a unique task id
 function generateTaskId() {
   // if nextId does not exist in localStorage, set it to 1
 
@@ -114,7 +114,7 @@ function handleDeleteTask(event) {
 
 
 
-// TODO: create a function to handle dropping a task into a new status lane
+// create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
   // get the task id and new status from the event
   const draggable = ui.draggable;
