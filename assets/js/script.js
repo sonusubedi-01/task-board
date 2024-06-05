@@ -14,10 +14,17 @@ function generateTaskId() {
 // create a function to create a task card
 function createTaskCard(task) {
   // set card background color based on due date
-
+  let backgroundClass;
+  const dueDate = dayjs(task.dueDate);
+  const today = dayjs();
+  if(today.isAfter(dueDate, 'day')){
+    backgroundClass = "bg-danger";
+  }else if(today.isSame(dueDate, 'day')){
+    backgroundClass = "bg-warning";
+  }
   // create and append card elements
   $("#todo-cards").append(`
-      <div class="card mb-3">
+      <div class="card mb-3 ${backgroundClass}">
         <div class="card-header ">${task.title}</div>
           <div class="card-body">
             <p class="card-description mb-2 text-body-secondary">${task.description}</p>
