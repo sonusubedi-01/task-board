@@ -25,12 +25,12 @@ function createTaskCard(task) {
   }
   // create and append card elements
   $(`#${task.status}-cards`).append(`
-      <div class="card mb-3 ${backgroundClass}">
+      <div id="task-${task.id}" class="card mb-3 ${backgroundClass}">
         <div class="card-header ">${task.title}</div>
           <div class="card-body">
             <p class="card-description mb-2 text-body-secondary">${task.description}</p>
             <p class="card-date">${task.dueDate}</p>
-            <button type="button" class="btn btn-danger">Delete</button>
+            <button id="delete-task-button" type="button" class="btn btn-danger" data-id="${task.id}">Delete</button>
         </div>
       </div>
   `);
@@ -81,14 +81,20 @@ function handleAddTask(event) {
   $("#task-description").val("");
 }
 
-// TODO: create a function to handle deleting a task
+// create a function to handle deleting a task
 function handleDeleteTask(event) {
- 
-  
   // get the task id from the button clicked
-
+  const id = $(this).attr("data-id");
 
   // remove the task from the taskList, save and render
+  const newTaskList = [];
+  for(let task of taskList){
+    if(task.id != id){
+      newTaskList.push(task);
+    }
+  }
+  localStorage.setItem("tasks", JSON.stringify(newTaskList));
+  $(`#task-${id}`).remove();
 }
 
 // TODO: create a function to handle dropping a task into a new status lane
@@ -107,6 +113,8 @@ $(document).ready(function () {
 
   // add event listener
   $("#add-task-button").on('click', handleAddTask);
+
+$(".swim-lanes").on('click', '#delete-task-button', handleDeleteTask);
 
   // make lanes droppable
 
