@@ -14,3 +14,7 @@ body {
 .task-card:hover {
   cursor: grab;
 }
+
+#delete-task-button {
+  border: 1px solid white;
+}
