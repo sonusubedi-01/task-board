@@ -1,5 +1,4 @@
-// Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks")) ?? [];
+// Retrieve nextId from localStorage
 let nextId = JSON.parse(localStorage.getItem("nextId")) ?? 0;
 
 // TODO: create a function to generate a unique task id
@@ -10,6 +9,11 @@ function generateTaskId() {
 
   // save nextId to localStorage
   localStorage.setItem('nextId', ++nextId);
+}
+
+// returns tasks from local storage
+function getTasks() {
+  return JSON.parse(localStorage.getItem("tasks")) ?? [];
 }
 
 // returns CSS classes to add based on task status
@@ -45,11 +49,11 @@ function createTaskCard(task) {
   makeTasksDraggable();
 }
 
-// TODO: create a function to render the task list and make cards draggable
+// create a function to render the task list and make cards draggable
 function renderTaskList() {
-
+  const tasks = getTasks();
   // loop through tasks and create task cards for each status
-  for(let task of taskList){
+  for(let task of tasks){
     createTaskCard(task);
   }
 
@@ -79,8 +83,9 @@ function handleAddTask(event) {
     status: 'todo'
   };
   // add the new task to the taskList save and render
-  taskList.push(task);
-  localStorage.setItem("tasks", JSON.stringify(taskList));
+  const tasks = JSON.parse(localStorage.getItem("tasks")) ?? []
+  tasks.push(task);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 
   createTaskCard(task);
 
@@ -96,8 +101,9 @@ function handleDeleteTask(event) {
   const id = $(this).attr("data-id");
 
   // remove the task from the taskList, save and render
+  const tasks = getTasks();
   const newTaskList = [];
-  for(let task of taskList){
+  for(let task of tasks){
     if(task.id != id){
       newTaskList.push(task);
     }
@@ -105,6 +111,8 @@ function handleDeleteTask(event) {
   localStorage.setItem("tasks", JSON.stringify(newTaskList));
   $(`#task-${id}`).remove();
 }
+
+
 
 // TODO: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
@@ -122,7 +130,8 @@ function handleDrop(event, ui) {
   $(`#${lane}-cards`).append(draggable);
 
   // update the task status of the dragged card
-  for(let task of taskList){
+  const tasks = getTasks();
+  for(let task of tasks){
     if(task.id == taskId){
       task.status = lane
       $(`#task-${taskId}`).removeClass('bg-danger bg-warning bg-light text-white text-black').addClass(getTaskCardStyles(task));
@@ -130,7 +139,7 @@ function handleDrop(event, ui) {
   }
 
   // save and render
-  localStorage.setItem("tasks", JSON.stringify(taskList))
+  localStorage.setItem("tasks", JSON.stringify(tasks))
 }
 
 //make task draggable
