@@ -1,5 +1,5 @@
 // Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks"));
+let taskList = JSON.parse(localStorage.getItem("tasks")) ?? [];
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 // TODO: create a function to generate a unique task id
@@ -11,13 +11,21 @@ function generateTaskId() {
   // save nextId to localStorage
 }
 
-// TODO: create a function to create a task card
+// create a function to create a task card
 function createTaskCard(task) {
-  // create card elements
-
   // set card background color based on due date
 
-  // append card elements
+  // create and append card elements
+  $("#todo-cards").append(`
+      <div class="card mb-3">
+        <div class="card-header ">${task.title}</div>
+          <div class="card-body">
+            <p class="card-description mb-2 text-body-secondary">${task.description}</p>
+            <p class="card-date">${task.dueDate}</p>
+            <button type="button" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+  `);
 }
 
 // TODO: create a function to render the task list and make cards draggable
@@ -29,18 +37,42 @@ function renderTaskList() {
   // loop through tasks and create task cards for each status
 
   // make task cards draggable
+ 
 }
 
-// TODO: create a function to handle adding a new task
+// create a function to handle adding a new task
 function handleAddTask(event) {
-  // create a new task object
+  const title = $("#task-title").val()?.trim();
+  const dueDate = $("#task-due-date").val()?.trim();
+  const description = $("#task-description").val()?.trim();
 
+  if (!title || !dueDate || !description) {
+    alert("You need to fill out all the details!");
+    return;
+  }
+
+  // create a new task object
+  const task = {
+    title: title,
+    dueDate: dueDate,
+    description: description
+  };
   // add the new task to the taskList save and render
+  taskList.push(task);
+  createTaskCard(task);
+
+// resets form 
+  $("#task-title").val("");
+  $("#task-due-date").val("");
+  $("#task-description").val("");
 }
 
 // TODO: create a function to handle deleting a task
 function handleDeleteTask(event) {
+ 
+  
   // get the task id from the button clicked
+
 
   // remove the task from the taskList, save and render
 }
@@ -54,13 +86,15 @@ function handleDrop(event, ui) {
   // save and render
 }
 
-// TODO: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
+// when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
   // render the task list
 
   // add event listener
+  $("#add-task-button").on('click', handleAddTask);
 
   // make lanes droppable
+
 
   // make due date field a date picker
   $("#task-due-date").datepicker();
