@@ -24,7 +24,7 @@ function createTaskCard(task) {
     backgroundClass = "bg-warning";
   }
   // create and append card elements
-  $("#todo-cards").append(`
+  $(`#${task.status}-cards`).append(`
       <div class="card mb-3 ${backgroundClass}">
         <div class="card-header ">${task.title}</div>
           <div class="card-body">
@@ -38,11 +38,11 @@ function createTaskCard(task) {
 
 // TODO: create a function to render the task list and make cards draggable
 function renderTaskList() {
-  // if taskList is null, set it to an empty array
-
-  // empty existing task cards
 
   // loop through tasks and create task cards for each status
+  for(let task of taskList){
+    createTaskCard(task);
+  }
 
   // make task cards draggable
  
@@ -67,7 +67,7 @@ function handleAddTask(event) {
     title: title,
     dueDate: dueDate,
     description: description,
-    status: 'to-do'
+    status: 'todo'
   };
   // add the new task to the taskList save and render
   taskList.push(task);
@@ -103,6 +103,7 @@ function handleDrop(event, ui) {
 // when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
   // render the task list
+  renderTaskList();
 
   // add event listener
   $("#add-task-button").on('click', handleAddTask);
