@@ -57,6 +57,7 @@ function handleAddTask(event) {
     alert("You need to fill out all the details!");
     return;
   }
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
   // create a new task object
   const task = {
@@ -67,6 +68,7 @@ function handleAddTask(event) {
   // add the new task to the taskList save and render
   taskList.push(task);
   createTaskCard(task);
+  localStorage.setItem("tasks", JSON.stringify(taskList));
 
 // resets form 
   $("#task-title").val("");
