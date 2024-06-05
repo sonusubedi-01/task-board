@@ -1,6 +1,6 @@
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks")) ?? [];
-let nextId = JSON.parse(localStorage.getItem("nextId"));
+let nextId = JSON.parse(localStorage.getItem("nextId")) ?? 0;
 
 // TODO: create a function to generate a unique task id
 function generateTaskId() {
@@ -9,6 +9,7 @@ function generateTaskId() {
   // otherwise, increment it by 1
 
   // save nextId to localStorage
+  localStorage.setItem('nextId', ++nextId);
 }
 
 // create a function to create a task card
@@ -57,20 +58,24 @@ function handleAddTask(event) {
     alert("You need to fill out all the details!");
     return;
   }
-  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  generateTaskId();
 
   // create a new task object
   const task = {
+    id: nextId,
     title: title,
     dueDate: dueDate,
-    description: description
+    description: description,
+    status: 'to-do'
   };
   // add the new task to the taskList save and render
   taskList.push(task);
-  createTaskCard(task);
   localStorage.setItem("tasks", JSON.stringify(taskList));
 
-// resets form 
+  createTaskCard(task);
+
+  // resets form
   $("#task-title").val("");
   $("#task-due-date").val("");
   $("#task-description").val("");
